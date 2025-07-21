@@ -55,7 +55,7 @@ while f:
     
     match in1:
         case 1: 
-            Title = input("enter the Title of Task ")
+            Title = input("Enter the Title of Task ")
             Description = input("Enter Status ")
             Priority = int(input("Enter the Priority from 0 to 5 "))
             task1.addTask(Title, Description, Priority)
