@@ -65,9 +65,13 @@ while f:
             if not Description:
                 print("Description cannot be empty")
                 continue
-            Priority = int(input("Enter the Priority from 0 to 5 "))
-            if not (0 <= Priority <= 5):
-                print("Priority must be an integer between 0 and 5")
+            try:
+                Priority = int(input("Enter the Priority from 0 to 5 "))
+                if not (0 <= Priority <= 5):
+                    print("Priority must be an integer between 0 and 5")
+                    continue
+            except ValueError:
+                print("Invalid input! Please enter an integer for priority.")
                 continue
             task1.addTask(Title, Description, Priority)
         case 2:
@@ -80,7 +84,6 @@ while f:
                 else:
                     print("No tasks available")
                 continue
-            
         case 3:
             Title = input("Enter the title of task to change ")
             if Title not in task1.task:
@@ -96,10 +99,13 @@ while f:
             if Title not in task1.task:
                 print("Task not found")
                 continue
-        
-            Priority = int(input("Enter the Priority from 0 to 5 "))
-            if not (0 <= Priority <= 5):
-                print("Priority must be an integer between 0 and 5")
+            try:
+                Priority = int(input("Enter the Priority from 0 to 5 "))
+                if not (0 <= Priority <= 5):
+                    print("Priority must be an integer between 0 and 5")
+                    continue
+            except ValueError:
+                print("Invalid input! Please enter an integer for priority.")
                 continue
             task1.changePriority(Title, Priority)
         case 5:
