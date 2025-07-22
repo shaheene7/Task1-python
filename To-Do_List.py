@@ -1,4 +1,5 @@
 import json
+import os
 
 class Task:
     
@@ -26,12 +27,44 @@ class Task:
 
     def markTaskAsDone(self, Title, Description):
         self.task[Title]["Description"] = Description
+        if os.path.exists("tasks.json"):
+            with open("tasks.json", "r") as file:
+                data = json.load(file)
+            if Title in data:
+                data[Title]["Description"] = Description
+            with open("tasks.json", "w") as file:
+              json.dump(data, file, indent=4)
     
     def changePriority(self, Title, priority):
-        self.task[Title]["priority"] = priority
+        self.task[Title]["Priority"] = priority
+        if os.path.exists("tasks.json"):
+            with open("tasks.json", "r") as file:
+                data = json.load(file)
+            if Title in data:
+                data[Title]["Priority"] = priority
+            with open("tasks.json", "w") as file:
+              json.dump(data, file, indent=4)
     
     def deleteTask(self, Title):
         del(self.task[Title])
+        if os.path.exists("tasks.json"):
+            with open("tasks.json", "r") as file:
+                data = json.load(file)
+            if Title in data:
+                del data[Title]
+                with open("tasks.json", "w") as file:
+                 json.dump(data, file, indent=4)
+                return
+            else:
+                print("Task not found in file")
+                return  
+        else:
+          print("Task not found in file")
+          return
+            
+            
+
+
 
     def saveToFile(self):
         with open("tasks.json", "w+") as file:

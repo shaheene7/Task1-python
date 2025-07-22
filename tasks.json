@@ -1,6 +1,10 @@
 {
-    "taks1": {
+    "task1": {
         "Description": "done",
-        "Priority": 3
+        "Priority": 2
+    },
+    "task2": {
+        "Description": "done",
+        "Priority": 0
     }
 }
