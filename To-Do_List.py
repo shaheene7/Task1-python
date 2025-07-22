@@ -28,7 +28,7 @@ class Task:
         self.task[Title]["Description"] = Description
     
     def changePriority(self, Title, priority):
-        self.task[Title][1] = priority
+        self.task[Title]["priority"] = priority
     
     def deleteTask(self, Title):
         del(self.task[Title])
@@ -133,5 +133,3 @@ while f:
 
 
 
-
-        
