@@ -1,12 +1,10 @@
-[
-{"Title": "task1",
- "Description": "done",
- "Priority": 1
-},
-{"Title": "task2",
- "Description": "in progress",
- "Priority": 4
-},
-
-]
-
+{
+    "task1": {
+        "Description": "done",
+        "Priority": 2
+    },
+    "task2": {
+        "Description": "done",
+        "Priority": 3
+    }
+}

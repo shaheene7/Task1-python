@@ -1,23 +1,31 @@
+import json
+
 class Task:
-    task = {}
+    
 
 
     def __init__(self):
-        pass
-
+        self.task = {}
+       
+       
     def addTask(self , Title, Description, Priority):
-        self.title = Title
-        self.description = Description
-        self.priority = Priority
-        self.task.update({Title: [Description, Priority]})
+        if not Title:
+            raise ValueError("Title cannot be empty")
+        if not Description or not isinstance(Description, str):
+            raise ValueError("Description cannot be empty") 
+        if not isinstance(Priority, int) or not (0 <= Priority <= 5): 
+            raise ValueError("Priority must be an integer between 0 and 5")
+        self.task[Title] = {"Description": Description,"Priority": Priority}
+        
 
     def viewTasks(self):
-        for key,values in self.task.items():
-            print(f"Title: {key}, Status: {values[0]}\n")
+       with open("tasks.json", "r") as f:
+         data = json.load(f)
+         print(data)
             
 
-    def markTaskAsDone(self, Title, Status):
-        self.task[Title][0] = Status
+    def markTaskAsDone(self, Title, Description):
+        self.task[Title]["Description"] = Description
     
     def changePriority(self, Title, priority):
         self.task[Title][1] = priority
@@ -26,56 +34,87 @@ class Task:
         del(self.task[Title])
 
     def saveToFile(self):
-        fo = open("tasks.json", "w+")
-        fo.seek(0)
-        r = fo.readline()
-        if not r:
-          fo.write("[\n")
-        for key,values in self.task.items():
-            fo.seek(0,2)
-            fo.write("{")
-            fo.write(f'"Title": "{key}",\n "Description": "{values[0]}",\n "Priority": {values[1]}\n')
-            fo.write("},\n")
-            
-        fo.write("]")
-        fo.close()
+        with open("tasks.json", "w+") as file:
+            json.dump(self.task, file, indent=4)
 
 f = True
 task1 = Task()
 while f:
     
     print("1-Add a Task")
-    print("2-View Tasks")
-    print("3-Change Status")
+    print("2-View Tasks from File")
+    print("3-Change Description")
     print("4-Change Priority")
     print("5-Delete Task")
     print("6-Exit Program")
     print("7-Save")
-    in1 = int(input("Enter your operation "))
+
+    try:
+        operation = int(input("Enter your operation: "))
+    except ValueError:
+        print("Invalid input! Please enter a number.")
+        continue  
     
-    match in1:
+    match operation:
         case 1: 
             Title = input("enter the Title of Task ")
-            Description = input("Enter Status ")
+            if not Title:
+                print("Title cannot be empty")
+                continue
+            Description = input("Enter Description ")
+            if not Description:
+                print("Description cannot be empty")
+                continue
             Priority = int(input("Enter the Priority from 0 to 5 "))
+            if not (0 <= Priority <= 5):
+                print("Priority must be an integer between 0 and 5")
+                continue
             task1.addTask(Title, Description, Priority)
-        case 2: task1.viewTasks()
+        case 2:
+            if not task1.task:
+                print("No tasks available")
+                continue
+            with open("tasks.json", "r+") as file:
+                if file.read().strip():
+                    task1.viewTasks()
+                else:
+                    print("No tasks available")
+                continue
+            
         case 3:
             Title = input("Enter the title of task to change ")
-            Status = input("Enter the status ")
-            task1.markTaskAsDone(Title, Status)
+            if Title not in task1.task:
+                print("Task not found")
+                continue
+            Description = input("Enter the Description ")
+            if not Description:
+                print("Description cannot be empty")
+                continue
+            task1.markTaskAsDone(Title, Description)
         case 4:
             Title = input("Enter the title of task to change ")
-            Priority = input("Enter the Priority from 0 to 5 ")
+            if Title not in task1.task:
+                print("Task not found")
+                continue
+        
+            Priority = int(input("Enter the Priority from 0 to 5 "))
+            if not (0 <= Priority <= 5):
+                print("Priority must be an integer between 0 and 5")
+                continue
             task1.changePriority(Title, Priority)
         case 5:
             Title = input("Enter the title of task to delete ")
+            if Title not in task1.task:
+                print("Task not found")
+                continue
             task1.deleteTask(Title)
         case 6: f = False
         case 7: task1.saveToFile()
-        case _: 
-            print("invalid input")
-            break
+        case _:
+            print("Invalid operation, please try again")
+            continue 
+
+            
         
     
    
